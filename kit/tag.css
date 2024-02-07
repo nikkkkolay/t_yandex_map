@@ -1,0 +1,24 @@
+.tags {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.tag {
+    text-transform: lowercase;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+    line-height: 16px;
+    padding: 4px 8px;
+    border-radius: 2px;
+}
+
+.tag_primary {
+    background-color: var(--tag-bg-primary);
+    color: var(--tag-color-primary);
+}
+
+.tag_secondary {
+    background-color: var(--tag-bg-secondary);
+    color: var(--text-primary-dzeta);
+}

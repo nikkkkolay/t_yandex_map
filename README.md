@@ -1,1 +1,1 @@
-# t_yandex_map
+# t_yandex-map

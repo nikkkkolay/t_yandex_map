@@ -1,0 +1,54 @@
+:root {
+    /* Текст */
+    --font-primary: "Montserrat", arial, helvetica, sans-serif;
+
+    /* Цвет текста */
+    --text-primary-alpha: #00569a;
+    --text-primary-beta: #eeeeee;
+    --text-primary-gamma: #009cd9;
+    --text-primary-delta: rgba(0, 0, 0, 0.9);
+    --text-primary-epsilon: #56aee0;
+    --text-primary-dzeta: #ffffff;
+    --text-secondary-alpha: #f46b37;
+
+    /* Цветы ссылки */
+    --link-color-primary: #56aee0;
+    --link-color-primary-hover: #f46b37;
+
+    /* Цвет бэграунда */
+    --bg-header-top: #009cd9;
+    --bg-header-bottom: #009cd9;
+    --bg-header-info: #eaf6fc;
+    --bg-banner-primary: #009cd9;
+    --bg-main: #eaf6fc;
+    --bg-footer: #00569a;
+
+    /* Цвет элементов */
+    --hr-color: #eeebeb;
+    --bg-primary-alpha: #ffffff;
+    --bg-primary-beta: #009cd9;
+    --bg-primary-gamma: #00569a;
+    --bg-primary-delta: #f46b37;
+    --bg-primary-epsilon: #ebecf0;
+    --bg-primary-dzeta: #56aee0;
+    --border-color-primary-alpha: #56aee0;
+    --box-shadow-primary-alpha: 0 0 0 0.25rem rgba(49, 176, 226, 0.25);
+    --box-shadow-primary-beta: 0 3px 4px rgba(0, 0, 0, 0.25);
+    --box-shadow-primary-gamma: 0 1px 1px rgba(0, 0, 0, 0.25);
+    --box-shadow-primary-delta: 0px 0px 6px 1px rgba(0, 0, 0, 0.25);
+    --bg-hover_primary: linear-gradient(to right, rgb(255 255 255 / 0%) 0%, rgb(255 255 255 / 80%) 50%, rgb(128 186 232 / 0%) 99%, rgb(125 185 232 / 0%) 100%);
+
+    /* Кнопки */
+    --button-primary-color: #ffffff;
+    --button-primary-beta-hover: rgb(49, 176, 226);
+    --button-primary-gamma-hover: rgb(14, 94, 155);
+    --button-primary-delta-hover: rgb(250, 103, 40);
+
+    /* Тэг */
+    --tag-bg-primary: #ebeefb;
+    --tag-bg-secondary: #ff8d60;
+    --tag-color-primary: #009cd9;
+    --tag-color-secondary: #e95e99;
+
+    --blockquote: #f6fafe;
+}

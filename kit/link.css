@@ -1,0 +1,8 @@
+.link {
+    display: block;
+    color: var(--text-primary-gamma);
+}
+
+.link:hover {
+    color: var(--text-secondary-alpha);
+}
