@@ -37,16 +37,38 @@ $(".navbar-collapse").on("click", function () {
 async function initMap() {
     await ymaps3.ready;
 
-    const markerPropsVO = [
+    const marketVO = [
         {
             coordinates: [33.06208599275346, 68.95469889784452],
             iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
-            message: "I'm yellow capybara!",
+            info: {
+                building: "./plug.png",
+                address: "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 112",
+                tel: "8 800 350 12 21",
+                mail: "priem@mauniver.ru",
+                opening: {
+                    pt: "09.00-17.00",
+                    break: "13.00-14.00",
+                    sb: "выходной",
+                    vs: "выходной",
+                },
+            },
         },
         {
             coordinates: [33.0767053822784, 68.96478012321226],
             iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
-            message: "I'm yellow capybara!",
+            info: {
+                building: "./plug.png",
+                address: "Апатиты, ул. Лесная, д. 29",
+                tel: " 8 815 556 62 20",
+                additional: "8 964 687 00 05",
+                mail: "priem@arcticsu.ru",
+                opening: {
+                    pt: "09.00-17.30",
+                    sb: "10.00-14.00",
+                    vs: "выходной",
+                },
+            },
         },
     ];
 
@@ -82,6 +104,7 @@ async function initMap() {
                 this._popup.style.display = "none";
             }
         }
+
         // Method for creating a marker element
         _createMarker() {
             const container = document.createElement("div");
@@ -89,14 +112,11 @@ async function initMap() {
             marker.className = "icon-marker";
             marker.src = this._props.icon;
             marker.className = "icon-marker";
-
             marker.onclick = () => {
                 this._popupOpen = true;
                 this._actualizePopup();
             };
-
             container.append(marker, this._popup);
-
             this._marker = new YMapMarker({ coordinates: this._props.coordinates }, container);
             this.addChild(this._marker);
         }
@@ -105,19 +125,43 @@ async function initMap() {
             const popupElement = document.createElement("div");
             popupElement.className = "popup";
 
-            const textElement = document.createElement("div");
-            textElement.className = "popup__text";
-            textElement.textContent = this._props.popupContent;
+            const template = `
 
-            const closeBtn = document.createElement("button");
-            closeBtn.className = "popup__close";
-            closeBtn.textContent = "Close Popup";
+            <img src="${this._props.info.building}" />
+            <ul class="list-group list-group-flush">
+
+            <li class="list-group-item contacts__tel">
+                <a href="tel:${this._props.info.tel}" class="link">${this._props.info.tel}</a>
+                ${this._props.info.additional ? `<a href="tel:${this._props.info.additional}" class="link">${this._props.info.additional}</a>` : ""}
+            </li>
+            <li class="list-group-item contacts__mail">
+                <a href="mailto:${this._props.info.mail}" target="__blank" class="link">${this._props.info.mail}</a>
+            </li>
+            <li class="list-group-item contacts__clock">Пн-пт: ${this._props.info.opening.pt} <br/>
+            ${this._props.info.opening.break ? `Обед: ${this._props.info.opening.break} <br/>` : ""}
+            Сб: ${this._props.info.opening.sb} <br/>
+            Вс: ${this._props.info.opening.vs}
+            </li>
+            </ul>
+            `;
+
+            const closeIconTemplate = `
+            <svg class="popup-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#56aee0"><path d="M5 5L19 19M5 19L19 5" stroke="#56aee0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            `;
+
+            const closeBtn = document.createElement("div");
+            closeBtn.className = "close-container";
+
+            popupElement.insertAdjacentHTML("beforeend", template.trim());
+            closeBtn.insertAdjacentHTML("beforeend", closeIconTemplate.trim());
+
             closeBtn.onclick = () => {
+                console.log(this._popupOpen);
                 this._popupOpen = false;
                 this._actualizePopup();
             };
 
-            popupElement.append(textElement, closeBtn);
+            popupElement.append(closeBtn);
 
             this._popup = popupElement;
         }
@@ -260,8 +304,8 @@ async function initMap() {
 
     map.addChild(layer);
 
-    markerPropsVO.forEach((marker) => {
-        map.addChild(new CustomMarkerWithPopup({ coordinates: marker.coordinates, popupContent: marker.message, icon: marker.iconSrc }));
+    marketVO.forEach((marker) => {
+        map.addChild(new CustomMarkerWithPopup({ coordinates: marker.coordinates, popupContent: marker.message, icon: marker.iconSrc, info: marker.info }));
     });
 }
 
