@@ -1,10 +1,7 @@
 .nav-underline .nav-link.tab-link.active,
 .nav-underline .show > .nav-link.tab-link {
     opacity: 1;
-    font-weight: 400;
-    color: var(--text-primary-alpha);
     color: var(--text-secondary-alpha);
-
     border-bottom-color: var(--text-secondary-alpha);
 }
 
@@ -15,8 +12,9 @@
 }
 
 .nav-underline .nav-link.tab-link {
-    font-weight: 400;
+    font-weight: 500;
     border-bottom: var(--bs-nav-underline-border-width) solid transparent;
+    font-size: clamp(1rem, 2vw, 1.2rem);
 }
 
 .nav-link.tab-link,

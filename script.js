@@ -37,13 +37,14 @@ $(".navbar-collapse").on("click", function () {
 async function initMap() {
     await ymaps3.ready;
 
-    const marketVO = [
+    const markVO = [
         {
+            id: 1,
             coordinates: [33.06208599275346, 68.95469889784452],
             iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
                 building: "./plug.png",
-                address: "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 112",
+                address: "Мурманск, пр. Кирова, д. 1, корпус Л",
                 tel: "8 800 350 12 21",
                 mail: "priem@mauniver.ru",
                 opening: {
@@ -55,6 +56,7 @@ async function initMap() {
             },
         },
         {
+            id: 2,
             coordinates: [33.0767053822784, 68.96478012321226],
             iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
@@ -105,6 +107,15 @@ async function initMap() {
             }
         }
 
+        _createChoiceList() {
+            const choiceListTemplate = `
+            <ul class="list-group list-group-flush">
+            <li class="list-group-item list-group-item-action active" aria-current="true">Мурманск, пр. Кирова, д. 1, корпус Л</li>
+            <li class="list-group-item list-group-item-action">Апатиты, ул. Лесная, д. 29</li>
+            </ul>
+            `;
+        }
+
         // Method for creating a marker element
         _createMarker() {
             const container = document.createElement("div");
@@ -123,7 +134,18 @@ async function initMap() {
         // Method for creating a popup window element
         _createPopup() {
             const popupElement = document.createElement("div");
+            const closeBtn = document.createElement("div");
+
             popupElement.className = "popup";
+            closeBtn.className = "close-container";
+
+            const closeIconTemplate = `
+            <svg class="popup-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#56aee0"><path d="M5 5L19 19M5 19L19 5" stroke="#56aee0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            `;
+
+            closeBtn.insertAdjacentHTML("beforeend", closeIconTemplate.trim());
+
+            popupElement.append(closeBtn);
 
             const template = `
 
@@ -145,34 +167,23 @@ async function initMap() {
             </ul>
             `;
 
-            const closeIconTemplate = `
-            <svg class="popup-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#56aee0"><path d="M5 5L19 19M5 19L19 5" stroke="#56aee0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            `;
-
-            const closeBtn = document.createElement("div");
-            closeBtn.className = "close-container";
-
             popupElement.insertAdjacentHTML("beforeend", template.trim());
-            closeBtn.insertAdjacentHTML("beforeend", closeIconTemplate.trim());
 
             closeBtn.onclick = () => {
-                console.log(this._popupOpen);
                 this._popupOpen = false;
                 this._actualizePopup();
             };
-
-            popupElement.append(closeBtn);
 
             this._popup = popupElement;
         }
     }
 
     const map = new YMap(
-        document.getElementById("app-contact"),
+        document.getElementById("vo-map"),
         {
             location: {
                 center: [33.06208599275346, 68.95469889784452],
-                zoom: 16,
+                zoom: 15,
             },
         },
         [new YMapDefaultSchemeLayer({}), new YMapDefaultFeaturesLayer({})]
@@ -304,7 +315,7 @@ async function initMap() {
 
     map.addChild(layer);
 
-    marketVO.forEach((marker) => {
+    markVO.forEach((marker) => {
         map.addChild(new CustomMarkerWithPopup({ coordinates: marker.coordinates, popupContent: marker.message, icon: marker.iconSrc, info: marker.info }));
     });
 }
