@@ -1386,7 +1386,7 @@ ul.files li:before {
 }
 
 .contacts #spo-map ul li,
-.contacts #vo-map ul li {
+.contacts #map ul li {
     position: relative;
     list-style: none;
     padding: 0 0 0 28px;
@@ -1446,7 +1446,7 @@ ul.files li:before {
     position: relative;
 }
 
-#vo-choice {
+#choice {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -1457,26 +1457,26 @@ ul.files li:before {
     background-color: rgba(0, 156, 217, 0.9);
 }
 
-#vo-choice .form-check-input,
-#vo-choice .form-check-label {
+#choice .form-check-input,
+#choice .form-check-label {
     cursor: pointer;
     font-weight: 400;
     color: var(--text-primary-beta);
 }
 
-#vo-choice .form-check-input:focus {
+#choice .form-check-input:focus {
     border-color: var(---bg-primary-delta);
     outline: 0;
     box-shadow: 0 0 0 0.25rem var(--box-shadow-primary-epsilon);
     box-shadow: var(--box-shadow-primary-epsilon);
 }
 
-#vo-choice .form-check-input:checked {
+#choice .form-check-input:checked {
     border-color: var(---bg-primary-delta);
     background-color: var(--bg-primary-delta);
     border: 1px solid var(--bg-primary-delta);
 }
 
-#vo-choice .form-check-input:checked + .form-check-label {
+#choice .form-check-input:checked + .form-check-label {
     /* color: var(--text-secondary-alpha); */
 }

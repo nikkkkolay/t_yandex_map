@@ -64,8 +64,8 @@ async function initMap() {
         {
             id: 1,
             locations: {
-                coordinates: [33.0767053822784, 68.96478012321226],
-                center: [33.07792609562602, 68.96538650122898],
+                coordinates: [33.40823749999997, 67.5853380520345],
+                center: [33.40967293145593, 67.5859512914979],
             },
             iconSrc:
                 "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
@@ -85,6 +85,95 @@ async function initMap() {
         },
     ];
 
+    const markerSpo = [
+        {
+            id: 0,
+            locations: {
+                coordinates: [33.06618599999991, 68.95360154944407],
+                center: [33.06618599999991, 68.95360154944407],
+            },
+            iconSrc:
+                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            info: {
+                name: "Мурманск, ММРК им. И.И. Месяцева",
+                building: "./plug.png",
+                address:
+                    "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 108",
+                tel: "8 815 240 33 35",
+                mail: "priem.mmrk@mauniver.ru",
+                opening: {
+                    pt: "09.00-18.00",
+                    sb: "10.00-16.00",
+                    vs: "выходной",
+                },
+            },
+        },
+        {
+            id: 1,
+            locations: {
+                coordinates: [33.073974499999984, 68.9635510494362],
+                center: [33.073974499999984, 68.9635510494362],
+            },
+            iconSrc:
+                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            info: {
+                name: "Мурманск, Колледж МАУ",
+                building: "./plug.png",
+                address: "183038, Мурманск, пр. Ленина, д. 57, каб. 107",
+                tel: "8 815 221 38 72",
+                mail: "priem.spo@mauniver.ru",
+                opening: {
+                    pt: "09.00-17.00",
+                    sb: "10.00-16.00",
+                    vs: "выходной",
+                },
+            },
+        },
+        {
+            id: 2,
+            locations: {
+                coordinates: [33.4318545, 69.204023548947],
+                center: [33.4318545, 69.204023548947],
+            },
+            iconSrc:
+                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            info: {
+                name: "Филиал город Полярный",
+                building: "./plug.png",
+                address: "184651, г. Полярный, ул. Лунина, д. 5",
+                tel: "8 815 517 36 60",
+                mail: "priem.pf@mauniver.ru",
+                opening: {
+                    pt: "09.00-17.00",
+                    sb: "10.00-14.00",
+                    vs: "выходной",
+                },
+            },
+        },
+        {
+            id: 3,
+            locations: {
+                coordinates: [33.675953499999984, 67.61130605196836],
+                center: [33.675953499999984, 67.61130605196836],
+            },
+            iconSrc:
+                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            info: {
+                name: "Филиал город Кировск",
+                building: "./plug.png",
+                address:
+                    "184250, г. Кировск, ул. 50 лет Октября, д. 2, корпус 1, каб. 1116",
+                tel: "8 815 315 54 08",
+                mail: "priem.kirovsk@mauniver.ru",
+                opening: {
+                    pt: "09.00-17.00",
+                    sb: "выходной",
+                    vs: "выходной",
+                },
+            },
+        },
+    ];
+
     const {
         YMapComplexEntity,
         YMap,
@@ -92,7 +181,8 @@ async function initMap() {
         YMapDefaultFeaturesLayer,
         YMapMarker,
     } = ymaps3;
-    const list = document.getElementById("vo-choice");
+
+    const list = document.getElementById("choice");
 
     class CustomMap extends YMapComplexEntity {
         constructor(props) {
@@ -164,7 +254,7 @@ async function initMap() {
 
                 map.setLocation({
                     center: this._props.locations.center,
-                    duration: 1000,
+                    zoom: 17,
                 });
                 this._popupOpen = true;
                 this._actualizePopup();
@@ -185,6 +275,8 @@ async function initMap() {
                 this._actualizePopup();
                 map.setLocation({
                     center: this._props.locations.center,
+                    zoom: 17,
+                    duration: 1000,
                 });
             };
             container.append(marker, this._popup);
@@ -228,8 +320,9 @@ async function initMap() {
                     this._props.info.mail
                 }" target="__blank" class="link">${this._props.info.mail}</a>
             </li>
-            <li class="list-group-item contacts__adress">
-    184209, г. Апатиты, ул. Лесная, д. 2            </li>
+            <li class="list-group-item contacts__adress">${
+                this._props.info.address
+            }</li>
             <li class="list-group-item contacts__clock">Пн-пт: ${
                 this._props.info.opening.pt
             } <br/>
@@ -256,10 +349,10 @@ async function initMap() {
     }
 
     const map = new YMap(
-        document.getElementById("vo-map"),
+        document.getElementById("map"),
         {
             location: {
-                center: [33.062135043261854, 68.9547602108598],
+                center: [33.062161093992, 68.95471611252427],
                 zoom: 17,
             },
         },
