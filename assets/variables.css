@@ -36,6 +36,7 @@
     --box-shadow-primary-beta: 0 3px 4px rgba(0, 0, 0, 0.25);
     --box-shadow-primary-gamma: 0 1px 1px rgba(0, 0, 0, 0.25);
     --box-shadow-primary-delta: 0px 0px 6px 1px rgba(0, 0, 0, 0.25);
+    --box-shadow-primary-epsilon: 0 0 0 0.25rem rgba(244, 107, 55, 0.2);
     --bg-hover_primary: linear-gradient(to right, rgb(255 255 255 / 0%) 0%, rgb(255 255 255 / 80%) 50%, rgb(128 186 232 / 0%) 99%, rgb(125 185 232 / 0%) 100%);
 
     /* Кнопки */

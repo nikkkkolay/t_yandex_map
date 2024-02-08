@@ -1352,23 +1352,25 @@ ul.files li:before {
 .popup {
     position: absolute;
     transform: translate(15%, -100%);
-
     display: flex;
     flex-direction: column;
     gap: 12px;
-
-    padding: 10px;
-
+    padding: 12px;
     background: #fff;
     box-shadow: 0 0 8px 0 #0003;
-    border-radius: 4px;
     border: 2px solid var(--bg-primary-dzeta);
+    border-radius: 4px;
 }
 
 .close-container {
+    position: absolute;
+    right: 0;
+    top: 0;
     display: flex;
     justify-content: end;
-    width: 100%;
+    padding: 5px;
+    background-color: #ffffff;
+    border-radius: 4px;
 }
 
 .popup-close {
@@ -1380,7 +1382,7 @@ ul.files li:before {
 .contacts ul {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
 }
 
 .contacts #spo-map ul li,
@@ -1388,12 +1390,7 @@ ul.files li:before {
     position: relative;
     list-style: none;
     padding: 0 0 0 28px;
-    font-size: 14px;
-    line-height: 1.3;
-}
-
-.contacts ul li a {
-    font-size: 14px;
+    line-height: 1.4;
 }
 
 .contacts ul li a:hover {
@@ -1418,7 +1415,7 @@ ul.files li:before {
 .contacts__mail::after {
     content: "";
     position: absolute;
-    top: 0;
+    top: 5px;
     left: 0;
     width: 22px;
     height: 20px;
@@ -1445,25 +1442,45 @@ ul.files li:before {
     background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 6.6L9.00001 3V17.4L3 21V6.6Z' stroke='%23009CD9' stroke-opacity='0.95' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M14.9999 6.6L20.9999 3V17.4L14.9999 21V6.6Z' stroke='%23009CD9' stroke-opacity='0.95' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M14.9999 6.6L8.99988 3V17.4L14.9999 21V6.6Z' stroke='%23009CD9' stroke-opacity='0.95' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
-.contacts .list-group-item.list-group-item-action {
-    padding: 15px 20px;
+.contacts .tab-pane {
+    position: relative;
+}
+
+#vo-choice {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: absolute;
+    left: 0;
+    z-index: 100;
+    padding: 10px 15px;
+    background-color: rgba(234, 246, 252, 0.9);
+}
+
+#vo-choice .form-check-input,
+#vo-choice .form-check-label {
     cursor: pointer;
-    background-color: var(--bg-primary-beta);
-    color: var(--text-primary-beta);
+    font-weight: 400;
+    font-size: clamp(1rem, 2vw, 1.2rem);
 }
 
-.contacts .list-group-item.list-group-item-action:hover {
-    background-color: var(--button-primary-beta-hover);
+#vo-choice .form-check-input:focus {
+    border-color: var(---bg-primary-delta);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem var(--box-shadow-primary-epsilon);
+    box-shadow: var(--box-shadow-primary-epsilon);
 }
 
-.contacts .list-group-item.list-group-item-action.active {
+#vo-choice .form-check-input {
+    margin-top: 5px;
+}
+
+#vo-choice .form-check-input:checked {
+    border-color: var(---bg-primary-delta);
     background-color: var(--bg-primary-delta);
+    border: 1px solid var(--bg-primary-delta);
 }
 
-.contacts .list-group-item.list-group-item-action.active:hover {
-    background-color: var(--button-primary-delta-hover);
-}
-
-.contacts .list-group.list-group-flush {
-    margin-bottom: 15px;
+#vo-choice .form-check-input:checked + .form-check-label {
+    color: var(--text-secondary-alpha);
 }

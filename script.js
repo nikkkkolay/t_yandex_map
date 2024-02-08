@@ -37,10 +37,13 @@ $(".navbar-collapse").on("click", function () {
 async function initMap() {
     await ymaps3.ready;
 
-    const markVO = [
+    const markerVo = [
         {
-            id: 1,
-            coordinates: [33.06208599275346, 68.95469889784452],
+            id: 0,
+            locations: {
+                coordinates: [33.06208599275346, 68.95469889784452],
+                center: [33.0635749927398, 68.95531068571091],
+            },
             iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
                 building: "./plug.png",
@@ -56,8 +59,11 @@ async function initMap() {
             },
         },
         {
-            id: 2,
-            coordinates: [33.0767053822784, 68.96478012321226],
+            id: 1,
+            locations: {
+                coordinates: [33.0767053822784, 68.96478012321226],
+                center: [33.07792609562602, 68.96538650122898],
+            },
             iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
                 building: "./plug.png",
@@ -75,30 +81,31 @@ async function initMap() {
     ];
 
     const { YMapComplexEntity, YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker } = ymaps3;
+    const list = document.getElementById("vo-choice");
 
-    class CustomMarkerWithPopup extends YMapComplexEntity {
+    class CustomMap extends YMapComplexEntity {
         constructor(props) {
             super(props);
             this._popupOpen = false;
         }
 
-        // Handler for attaching the control to the map
         _onAttach() {
+            this._createChoiceList();
             this._createPopup();
             this._createMarker();
             this._actualizePopup();
         }
-        // Handler for detaching control from the map
+
         _onDetach() {
             this._marker = null;
         }
-        // Handler for updating marker properties
+
         _onUpdate(props) {
-            if (props.coordinates) {
-                this._marker?.update({ coordinates: props.coordinates });
+            if (props.locations.coordinates) {
+                this._marker?.update({ coordinates: props.locations.coordinates });
             }
         }
-        // Method for updating the status of a popup window
+
         _actualizePopup() {
             if (this._popupOpen) {
                 this._popup.style.display = "flex";
@@ -108,15 +115,50 @@ async function initMap() {
         }
 
         _createChoiceList() {
-            const choiceListTemplate = `
-            <ul class="list-group list-group-flush">
-            <li class="list-group-item list-group-item-action active" aria-current="true">Мурманск, пр. Кирова, д. 1, корпус Л</li>
-            <li class="list-group-item list-group-item-action">Апатиты, ул. Лесная, д. 29</li>
-            </ul>
-            `;
+            const choiceRoot = document.createElement("div");
+            const choiceElement = document.createElement("input");
+            const choiceLabel = document.createElement("label");
+
+            choiceElement.dataset.id = this._props.id;
+            choiceLabel.textContent = this._props.info.address;
+
+            choiceRoot.classList = "form-check";
+            choiceElement.classList = "form-check-input";
+            choiceLabel.classList = "form-check-label";
+
+            choiceElement.setAttribute("type", "radio");
+            choiceElement.setAttribute("id", `${this._props.id}`);
+            choiceElement.setAttribute("value", `${this._props.id}`);
+            choiceElement.setAttribute("name", `${this._props.id}`);
+
+            choiceLabel.setAttribute("for", `${this._props.id}`);
+
+            if (choiceElement.id == "0") choiceElement.checked = true;
+
+            choiceElement.onclick = (e) => {
+                const choiceElements = document.querySelectorAll(".form-check-input");
+
+                const targetId = e.target.id;
+
+                choiceElements.forEach((element) => {
+                    if (targetId === element.id) {
+                        element.checked;
+                    } else {
+                        element.checked = false;
+                    }
+                });
+
+                map.setLocation({
+                    center: this._props.locations.center,
+                });
+                this._popupOpen = true;
+                this._actualizePopup();
+            };
+
+            choiceRoot.append(choiceElement, choiceLabel);
+            this._props.list.append(choiceRoot);
         }
 
-        // Method for creating a marker element
         _createMarker() {
             const container = document.createElement("div");
             const marker = document.createElement("img");
@@ -124,14 +166,17 @@ async function initMap() {
             marker.src = this._props.icon;
             marker.className = "icon-marker";
             marker.onclick = () => {
-                this._popupOpen = true;
+                this._popupOpen = !this._popupOpen;
                 this._actualizePopup();
+                map.setLocation({
+                    center: this._props.locations.center,
+                });
             };
             container.append(marker, this._popup);
-            this._marker = new YMapMarker({ coordinates: this._props.coordinates }, container);
+            this._marker = new YMapMarker({ coordinates: this._props.locations.coordinates }, container);
             this.addChild(this._marker);
         }
-        // Method for creating a popup window element
+
         _createPopup() {
             const popupElement = document.createElement("div");
             const closeBtn = document.createElement("div");
@@ -148,10 +193,8 @@ async function initMap() {
             popupElement.append(closeBtn);
 
             const template = `
-
             <img src="${this._props.info.building}" />
             <ul class="list-group list-group-flush">
-
             <li class="list-group-item contacts__tel">
                 <a href="tel:${this._props.info.tel}" class="link">${this._props.info.tel}</a>
                 ${this._props.info.additional ? `<a href="tel:${this._props.info.additional}" class="link">${this._props.info.additional}</a>` : ""}
@@ -182,8 +225,8 @@ async function initMap() {
         document.getElementById("vo-map"),
         {
             location: {
-                center: [33.06208599275346, 68.95469889784452],
-                zoom: 15,
+                center: [33.062135043261854, 68.9547602108598],
+                zoom: 17,
             },
         },
         [new YMapDefaultSchemeLayer({}), new YMapDefaultFeaturesLayer({})]
@@ -315,8 +358,8 @@ async function initMap() {
 
     map.addChild(layer);
 
-    markVO.forEach((marker) => {
-        map.addChild(new CustomMarkerWithPopup({ coordinates: marker.coordinates, popupContent: marker.message, icon: marker.iconSrc, info: marker.info }));
+    markerVo.forEach((marker) => {
+        map.addChild(new CustomMap({ id: marker.id, locations: marker.locations, icon: marker.iconSrc, info: marker.info, list: list }));
     });
 }
 

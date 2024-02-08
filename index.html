@@ -225,9 +225,7 @@
                     <div class="row m-0">
                         <nav class="nav-tab-links">
                             <div class="nav nav-underline mt-2 mt-md-3" id="nav-tab" role="tablist">
-                                <a class="nav-link tab-link active" data-bs-toggle="tab" href="#vo-contactts" aria-controls="vo-contactts" aria-selected="true"
-                                    >Высшее образование</a
-                                >
+                                <a class="nav-link tab-link active" data-bs-toggle="tab" href="#vo-contacts" aria-controls="vo-contacts" aria-selected="true">Высшее образование</a>
                                 <a class="nav-link tab-link" data-bs-toggle="tab" href="#spo-contacts" aria-controls="spo-contacts" aria-selected="false"
                                     >Среднее профессиональное образование</a
                                 >
@@ -237,18 +235,11 @@
                     <!-- https://yandex.ru/dev/jsapi30/doc/ru/dg/concepts/load -->
                     <!-- https://developer.tech.yandex.ru/services/3 -->
                     <div class="tab-content mt-2 mt-md-4">
-                        <div class="tab-pane active" id="vo-contactts">
-                            <div class="row row-cols-1 row-cols-md-2 g-4 m-0">
-                                <div class="col-md-4 m-0" id="vo-choice">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item list-group-item-action active" aria-current="true">Мурманск, пр. Кирова, д. 1, корпус Л</li>
-                                        <li class="list-group-item list-group-item-action">Апатиты, ул. Лесная, д. 29</li>
-                                    </ul>
-                                </div>
-                                <div id="vo-map" style="height: 450px" class="col-md-8 m-0"></div>
-                            </div>
+                        <div class="tab-pane fadeIn active" id="vo-contacts">
+                            <div id="vo-choice"></div>
+                            <div style="height: 520px" class="col-md-12 m-0" id="vo-map"></div>
                         </div>
-                        <div class="tab-pane" id="spo-contacts">
+                        <div class="tab-pane fadeIn" id="spo-contacts">
                             <div class="row row-cols-1 row-cols-md-2 g-4 m-0">
                                 <p>Среднее профессиональное образование</p>
                             </div>
