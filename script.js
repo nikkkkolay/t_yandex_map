@@ -44,10 +44,13 @@ async function initMap() {
                 coordinates: [33.06208599275346, 68.95469889784452],
                 center: [33.0635749927398, 68.95531068571091],
             },
-            iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            iconSrc:
+                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
+                name: "Мурманск, пр. Кирова, д. 1",
                 building: "./plug.png",
-                address: "Мурманск, пр. Кирова, д. 1, корпус Л",
+                address:
+                    "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 112",
                 tel: "8 800 350 12 21",
                 mail: "priem@mauniver.ru",
                 opening: {
@@ -64,10 +67,12 @@ async function initMap() {
                 coordinates: [33.0767053822784, 68.96478012321226],
                 center: [33.07792609562602, 68.96538650122898],
             },
-            iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            iconSrc:
+                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
+                name: "Апатиты, ул. Лесная, д. 29",
                 building: "./plug.png",
-                address: "Апатиты, ул. Лесная, д. 29",
+                address: "184209, г. Апатиты, ул. Лесная, д. 29",
                 tel: " 8 815 556 62 20",
                 additional: "8 964 687 00 05",
                 mail: "priem@arcticsu.ru",
@@ -80,7 +85,13 @@ async function initMap() {
         },
     ];
 
-    const { YMapComplexEntity, YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker } = ymaps3;
+    const {
+        YMapComplexEntity,
+        YMap,
+        YMapDefaultSchemeLayer,
+        YMapDefaultFeaturesLayer,
+        YMapMarker,
+    } = ymaps3;
     const list = document.getElementById("vo-choice");
 
     class CustomMap extends YMapComplexEntity {
@@ -102,7 +113,9 @@ async function initMap() {
 
         _onUpdate(props) {
             if (props.locations.coordinates) {
-                this._marker?.update({ coordinates: props.locations.coordinates });
+                this._marker?.update({
+                    coordinates: props.locations.coordinates,
+                });
             }
         }
 
@@ -120,7 +133,7 @@ async function initMap() {
             const choiceLabel = document.createElement("label");
 
             choiceElement.dataset.id = this._props.id;
-            choiceLabel.textContent = this._props.info.address;
+            choiceLabel.textContent = this._props.info.name;
 
             choiceRoot.classList = "form-check";
             choiceElement.classList = "form-check-input";
@@ -136,7 +149,8 @@ async function initMap() {
             if (choiceElement.id == "0") choiceElement.checked = true;
 
             choiceElement.onclick = (e) => {
-                const choiceElements = document.querySelectorAll(".form-check-input");
+                const choiceElements =
+                    document.querySelectorAll(".form-check-input");
 
                 const targetId = e.target.id;
 
@@ -150,6 +164,7 @@ async function initMap() {
 
                 map.setLocation({
                     center: this._props.locations.center,
+                    duration: 1000,
                 });
                 this._popupOpen = true;
                 this._actualizePopup();
@@ -173,7 +188,10 @@ async function initMap() {
                 });
             };
             container.append(marker, this._popup);
-            this._marker = new YMapMarker({ coordinates: this._props.locations.coordinates }, container);
+            this._marker = new YMapMarker(
+                { coordinates: this._props.locations.coordinates },
+                container
+            );
             this.addChild(this._marker);
         }
 
@@ -196,14 +214,30 @@ async function initMap() {
             <img src="${this._props.info.building}" />
             <ul class="list-group list-group-flush">
             <li class="list-group-item contacts__tel">
-                <a href="tel:${this._props.info.tel}" class="link">${this._props.info.tel}</a>
-                ${this._props.info.additional ? `<a href="tel:${this._props.info.additional}" class="link">${this._props.info.additional}</a>` : ""}
+                <a href="tel:${this._props.info.tel}" class="link">${
+                this._props.info.tel
+            }</a>
+                ${
+                    this._props.info.additional
+                        ? `<a href="tel:${this._props.info.additional}" class="link">${this._props.info.additional}</a>`
+                        : ""
+                }
             </li>
             <li class="list-group-item contacts__mail">
-                <a href="mailto:${this._props.info.mail}" target="__blank" class="link">${this._props.info.mail}</a>
+                <a href="mailto:${
+                    this._props.info.mail
+                }" target="__blank" class="link">${this._props.info.mail}</a>
             </li>
-            <li class="list-group-item contacts__clock">Пн-пт: ${this._props.info.opening.pt} <br/>
-            ${this._props.info.opening.break ? `Обед: ${this._props.info.opening.break} <br/>` : ""}
+            <li class="list-group-item contacts__adress">
+    184209, г. Апатиты, ул. Лесная, д. 2            </li>
+            <li class="list-group-item contacts__clock">Пн-пт: ${
+                this._props.info.opening.pt
+            } <br/>
+            ${
+                this._props.info.opening.break
+                    ? `Обед: ${this._props.info.opening.break} <br/>`
+                    : ""
+            }
             Сб: ${this._props.info.opening.sb} <br/>
             Вс: ${this._props.info.opening.vs}
             </li>
@@ -359,7 +393,15 @@ async function initMap() {
     map.addChild(layer);
 
     markerVo.forEach((marker) => {
-        map.addChild(new CustomMap({ id: marker.id, locations: marker.locations, icon: marker.iconSrc, info: marker.info, list: list }));
+        map.addChild(
+            new CustomMap({
+                id: marker.id,
+                locations: marker.locations,
+                icon: marker.iconSrc,
+                info: marker.info,
+                list: list,
+            })
+        );
     });
 }
 
