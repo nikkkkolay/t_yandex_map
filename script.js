@@ -41,16 +41,14 @@ async function initMap() {
         {
             id: 0,
             locations: {
-                coordinates: [33.06208599275346, 68.95469889784452],
-                center: [33.0635749927398, 68.95531068571091],
+                coordinates: [33.06618599999991, 68.95360154944407],
+                center: [33.0673554431304, 68.95425711576365],
             },
-            iconSrc:
-                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
                 name: "Мурманск, пр. Кирова, д. 1",
                 building: "./plug.png",
-                address:
-                    "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 112",
+                address: "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 112",
                 tel: "8 800 350 12 21",
                 mail: "priem@mauniver.ru",
                 opening: {
@@ -67,8 +65,7 @@ async function initMap() {
                 coordinates: [33.40823749999997, 67.5853380520345],
                 center: [33.40967293145593, 67.5859512914979],
             },
-            iconSrc:
-                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
                 name: "Апатиты, ул. Лесная, д. 29",
                 building: "./plug.png",
@@ -92,13 +89,11 @@ async function initMap() {
                 coordinates: [33.06618599999991, 68.95360154944407],
                 center: [33.06618599999991, 68.95360154944407],
             },
-            iconSrc:
-                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
                 name: "Мурманск, ММРК им. И.И. Месяцева",
                 building: "./plug.png",
-                address:
-                    "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 108",
+                address: "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 108",
                 tel: "8 815 240 33 35",
                 mail: "priem.mmrk@mauniver.ru",
                 opening: {
@@ -114,8 +109,7 @@ async function initMap() {
                 coordinates: [33.073974499999984, 68.9635510494362],
                 center: [33.073974499999984, 68.9635510494362],
             },
-            iconSrc:
-                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
                 name: "Мурманск, Колледж МАУ",
                 building: "./plug.png",
@@ -135,8 +129,7 @@ async function initMap() {
                 coordinates: [33.4318545, 69.204023548947],
                 center: [33.4318545, 69.204023548947],
             },
-            iconSrc:
-                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
                 name: "Филиал город Полярный",
                 building: "./plug.png",
@@ -156,13 +149,11 @@ async function initMap() {
                 coordinates: [33.675953499999984, 67.61130605196836],
                 center: [33.675953499999984, 67.61130605196836],
             },
-            iconSrc:
-                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
                 name: "Филиал город Кировск",
                 building: "./plug.png",
-                address:
-                    "184250, г. Кировск, ул. 50 лет Октября, д. 2, корпус 1, каб. 1116",
+                address: "184250, г. Кировск, ул. 50 лет Октября, д. 2, корпус 1, каб. 1116",
                 tel: "8 815 315 54 08",
                 mail: "priem.kirovsk@mauniver.ru",
                 opening: {
@@ -174,15 +165,9 @@ async function initMap() {
         },
     ];
 
-    const {
-        YMapComplexEntity,
-        YMap,
-        YMapDefaultSchemeLayer,
-        YMapDefaultFeaturesLayer,
-        YMapMarker,
-    } = ymaps3;
+    const { YMapComplexEntity, YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker } = ymaps3;
 
-    const list = document.getElementById("choice");
+    const tabs = document.getElementById("nav-tab");
 
     class CustomMap extends YMapComplexEntity {
         constructor(props) {
@@ -218,6 +203,7 @@ async function initMap() {
         }
 
         _createChoiceList() {
+            const choiceContainer = document.createElement("div");
             const choiceRoot = document.createElement("div");
             const choiceElement = document.createElement("input");
             const choiceLabel = document.createElement("label");
@@ -229,18 +215,17 @@ async function initMap() {
             choiceElement.classList = "form-check-input";
             choiceLabel.classList = "form-check-label";
 
+            choiceContainer.setAttribute("id", "choice");
             choiceElement.setAttribute("type", "radio");
             choiceElement.setAttribute("id", `${this._props.id}`);
             choiceElement.setAttribute("value", `${this._props.id}`);
             choiceElement.setAttribute("name", `${this._props.id}`);
-
             choiceLabel.setAttribute("for", `${this._props.id}`);
 
-            if (choiceElement.id == "0") choiceElement.checked = true;
+            if (choiceElement.id === "0") choiceElement.checked = true;
 
             choiceElement.onclick = (e) => {
-                const choiceElements =
-                    document.querySelectorAll(".form-check-input");
+                const choiceElements = document.querySelectorAll(".form-check-input");
 
                 const targetId = e.target.id;
 
@@ -261,7 +246,8 @@ async function initMap() {
             };
 
             choiceRoot.append(choiceElement, choiceLabel);
-            this._props.list.append(choiceRoot);
+            choiceContainer.append(choiceRoot);
+            document.getElementById("map").append(choiceContainer);
         }
 
         _createMarker() {
@@ -280,10 +266,7 @@ async function initMap() {
                 });
             };
             container.append(marker, this._popup);
-            this._marker = new YMapMarker(
-                { coordinates: this._props.locations.coordinates },
-                container
-            );
+            this._marker = new YMapMarker({ coordinates: this._props.locations.coordinates }, container);
             this.addChild(this._marker);
         }
 
@@ -306,31 +289,15 @@ async function initMap() {
             <img src="${this._props.info.building}" />
             <ul class="list-group list-group-flush">
             <li class="list-group-item contacts__tel">
-                <a href="tel:${this._props.info.tel}" class="link">${
-                this._props.info.tel
-            }</a>
-                ${
-                    this._props.info.additional
-                        ? `<a href="tel:${this._props.info.additional}" class="link">${this._props.info.additional}</a>`
-                        : ""
-                }
+                <a href="tel:${this._props.info.tel}" class="link">${this._props.info.tel}</a>
+                ${this._props.info.additional ? `<a href="tel:${this._props.info.additional}" class="link">${this._props.info.additional}</a>` : ""}
             </li>
             <li class="list-group-item contacts__mail">
-                <a href="mailto:${
-                    this._props.info.mail
-                }" target="__blank" class="link">${this._props.info.mail}</a>
+                <a href="mailto:${this._props.info.mail}" target="__blank" class="link">${this._props.info.mail}</a>
             </li>
-            <li class="list-group-item contacts__adress">${
-                this._props.info.address
-            }</li>
-            <li class="list-group-item contacts__clock">Пн-пт: ${
-                this._props.info.opening.pt
-            } <br/>
-            ${
-                this._props.info.opening.break
-                    ? `Обед: ${this._props.info.opening.break} <br/>`
-                    : ""
-            }
+            <li class="list-group-item contacts__adress">${this._props.info.address}</li>
+            <li class="list-group-item contacts__clock">Пн-пт: ${this._props.info.opening.pt} <br/>
+            ${this._props.info.opening.break ? `Обед: ${this._props.info.opening.break} <br/>` : ""}
             Сб: ${this._props.info.opening.sb} <br/>
             Вс: ${this._props.info.opening.vs}
             </li>
@@ -346,13 +313,26 @@ async function initMap() {
 
             this._popup = popupElement;
         }
+
+        renderMap(data) {
+            data.forEach((marker) => {
+                map.addChild(
+                    new CustomMap({
+                        id: marker.id,
+                        locations: marker.locations,
+                        icon: marker.iconSrc,
+                        info: marker.info,
+                    })
+                );
+            });
+        }
     }
 
     const map = new YMap(
         document.getElementById("map"),
         {
             location: {
-                center: [33.062161093992, 68.95471611252427],
+                center: [33.06618599999991, 68.95360154944407],
                 zoom: 17,
             },
         },
@@ -485,16 +465,16 @@ async function initMap() {
 
     map.addChild(layer);
 
-    markerVo.forEach((marker) => {
-        map.addChild(
-            new CustomMap({
-                id: marker.id,
-                locations: marker.locations,
-                icon: marker.iconSrc,
-                info: marker.info,
-                list: list,
-            })
-        );
+    const customMap = new CustomMap();
+    customMap.renderMap(markerVo);
+
+    tabs.addEventListener("click", (e) => {
+        if (e.target.hash === "#vo-contacts") {
+            customMap.renderMap(markerVo);
+        }
+        if (e.target.hash === "#spo-contacts") {
+            customMap.renderMap(markerSpo);
+        }
     });
 }
 
