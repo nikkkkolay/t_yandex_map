@@ -44,11 +44,13 @@ async function initMap() {
                 coordinates: [33.06618599999991, 68.95360154944407],
                 center: [33.0673554431304, 68.95425711576365],
             },
-            iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            iconSrc:
+                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
                 name: "Мурманск, пр. Кирова, д. 1",
                 building: "./plug.png",
-                address: "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 112",
+                address:
+                    "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 112",
                 tel: "8 800 350 12 21",
                 mail: "priem@mauniver.ru",
                 opening: {
@@ -65,7 +67,8 @@ async function initMap() {
                 coordinates: [33.40823749999997, 67.5853380520345],
                 center: [33.40967293145593, 67.5859512914979],
             },
-            iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            iconSrc:
+                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
                 name: "Апатиты, ул. Лесная, д. 29",
                 building: "./plug.png",
@@ -84,16 +87,18 @@ async function initMap() {
 
     const markerSpo = [
         {
-            id: 0,
+            id: 2,
             locations: {
                 coordinates: [33.06618599999991, 68.95360154944407],
                 center: [33.06618599999991, 68.95360154944407],
             },
-            iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            iconSrc:
+                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
                 name: "Мурманск, ММРК им. И.И. Месяцева",
                 building: "./plug.png",
-                address: "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 108",
+                address:
+                    "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 108",
                 tel: "8 815 240 33 35",
                 mail: "priem.mmrk@mauniver.ru",
                 opening: {
@@ -104,12 +109,13 @@ async function initMap() {
             },
         },
         {
-            id: 1,
+            id: 3,
             locations: {
                 coordinates: [33.073974499999984, 68.9635510494362],
                 center: [33.073974499999984, 68.9635510494362],
             },
-            iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            iconSrc:
+                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
                 name: "Мурманск, Колледж МАУ",
                 building: "./plug.png",
@@ -124,12 +130,13 @@ async function initMap() {
             },
         },
         {
-            id: 2,
+            id: 4,
             locations: {
                 coordinates: [33.4318545, 69.204023548947],
                 center: [33.4318545, 69.204023548947],
             },
-            iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            iconSrc:
+                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
                 name: "Филиал город Полярный",
                 building: "./plug.png",
@@ -144,16 +151,18 @@ async function initMap() {
             },
         },
         {
-            id: 3,
+            id: 5,
             locations: {
                 coordinates: [33.675953499999984, 67.61130605196836],
                 center: [33.675953499999984, 67.61130605196836],
             },
-            iconSrc: "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
+            iconSrc:
+                "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
                 name: "Филиал город Кировск",
                 building: "./plug.png",
-                address: "184250, г. Кировск, ул. 50 лет Октября, д. 2, корпус 1, каб. 1116",
+                address:
+                    "184250, г. Кировск, ул. 50 лет Октября, д. 2, корпус 1, каб. 1116",
                 tel: "8 815 315 54 08",
                 mail: "priem.kirovsk@mauniver.ru",
                 opening: {
@@ -165,181 +174,7 @@ async function initMap() {
         },
     ];
 
-    const { YMapComplexEntity, YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker } = ymaps3;
-
-    const tabs = document.getElementById("nav-tab");
-
-    class CustomMap extends YMapComplexEntity {
-        constructor(props) {
-            super(props);
-            this._popupOpen = false;
-        }
-
-        _onAttach() {
-            this._createChoiceList();
-            this._createPopup();
-            this._createMarker();
-            this._actualizePopup();
-        }
-
-        _onDetach() {
-            this._marker = null;
-        }
-
-        _onUpdate(props) {
-            if (props.locations.coordinates) {
-                this._marker?.update({
-                    coordinates: props.locations.coordinates,
-                });
-            }
-        }
-
-        _actualizePopup() {
-            if (this._popupOpen) {
-                this._popup.style.display = "flex";
-            } else {
-                this._popup.style.display = "none";
-            }
-        }
-
-        _createChoiceList() {
-            const choiceContainer = document.createElement("div");
-            const choiceRoot = document.createElement("div");
-            const choiceElement = document.createElement("input");
-            const choiceLabel = document.createElement("label");
-
-            choiceElement.dataset.id = this._props.id;
-            choiceLabel.textContent = this._props.info.name;
-
-            choiceRoot.classList = "form-check";
-            choiceElement.classList = "form-check-input";
-            choiceLabel.classList = "form-check-label";
-
-            choiceContainer.setAttribute("id", "choice");
-            choiceElement.setAttribute("type", "radio");
-            choiceElement.setAttribute("id", `${this._props.id}`);
-            choiceElement.setAttribute("value", `${this._props.id}`);
-            choiceElement.setAttribute("name", `${this._props.id}`);
-            choiceLabel.setAttribute("for", `${this._props.id}`);
-
-            if (choiceElement.id === "0") choiceElement.checked = true;
-
-            choiceElement.onclick = (e) => {
-                const choiceElements = document.querySelectorAll(".form-check-input");
-
-                const targetId = e.target.id;
-
-                choiceElements.forEach((element) => {
-                    if (targetId === element.id) {
-                        element.checked;
-                    } else {
-                        element.checked = false;
-                    }
-                });
-
-                map.setLocation({
-                    center: this._props.locations.center,
-                    zoom: 17,
-                });
-                this._popupOpen = true;
-                this._actualizePopup();
-            };
-
-            choiceRoot.append(choiceElement, choiceLabel);
-            choiceContainer.append(choiceRoot);
-            document.getElementById("map").append(choiceContainer);
-        }
-
-        _createMarker() {
-            const container = document.createElement("div");
-            const marker = document.createElement("img");
-            marker.className = "icon-marker";
-            marker.src = this._props.icon;
-            marker.className = "icon-marker";
-            marker.onclick = () => {
-                this._popupOpen = !this._popupOpen;
-                this._actualizePopup();
-                map.setLocation({
-                    center: this._props.locations.center,
-                    zoom: 17,
-                    duration: 1000,
-                });
-            };
-            container.append(marker, this._popup);
-            this._marker = new YMapMarker({ coordinates: this._props.locations.coordinates }, container);
-            this.addChild(this._marker);
-        }
-
-        _createPopup() {
-            const popupElement = document.createElement("div");
-            const closeBtn = document.createElement("div");
-
-            popupElement.className = "popup";
-            closeBtn.className = "close-container";
-
-            const closeIconTemplate = `
-            <svg class="popup-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#56aee0"><path d="M5 5L19 19M5 19L19 5" stroke="#56aee0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            `;
-
-            closeBtn.insertAdjacentHTML("beforeend", closeIconTemplate.trim());
-
-            popupElement.append(closeBtn);
-
-            const template = `
-            <img src="${this._props.info.building}" />
-            <ul class="list-group list-group-flush">
-            <li class="list-group-item contacts__tel">
-                <a href="tel:${this._props.info.tel}" class="link">${this._props.info.tel}</a>
-                ${this._props.info.additional ? `<a href="tel:${this._props.info.additional}" class="link">${this._props.info.additional}</a>` : ""}
-            </li>
-            <li class="list-group-item contacts__mail">
-                <a href="mailto:${this._props.info.mail}" target="__blank" class="link">${this._props.info.mail}</a>
-            </li>
-            <li class="list-group-item contacts__adress">${this._props.info.address}</li>
-            <li class="list-group-item contacts__clock">Пн-пт: ${this._props.info.opening.pt} <br/>
-            ${this._props.info.opening.break ? `Обед: ${this._props.info.opening.break} <br/>` : ""}
-            Сб: ${this._props.info.opening.sb} <br/>
-            Вс: ${this._props.info.opening.vs}
-            </li>
-            </ul>
-            `;
-
-            popupElement.insertAdjacentHTML("beforeend", template.trim());
-
-            closeBtn.onclick = () => {
-                this._popupOpen = false;
-                this._actualizePopup();
-            };
-
-            this._popup = popupElement;
-        }
-
-        renderMap(data) {
-            data.forEach((marker) => {
-                map.addChild(
-                    new CustomMap({
-                        id: marker.id,
-                        locations: marker.locations,
-                        icon: marker.iconSrc,
-                        info: marker.info,
-                    })
-                );
-            });
-        }
-    }
-
-    const map = new YMap(
-        document.getElementById("map"),
-        {
-            location: {
-                center: [33.06618599999991, 68.95360154944407],
-                zoom: 17,
-            },
-        },
-        [new YMapDefaultSchemeLayer({}), new YMapDefaultFeaturesLayer({})]
-    );
-
-    const layer = new YMapDefaultSchemeLayer({
+    const layer = {
         customization: [
             {
                 tags: {
@@ -461,20 +296,236 @@ async function initMap() {
                 ],
             },
         ],
+    };
+
+    const {
+        YMapComplexEntity,
+        YMap,
+        YMapDefaultSchemeLayer,
+        YMapDefaultFeaturesLayer,
+        YMapMarker,
+    } = ymaps3;
+
+    const tabs = document.getElementById("nav-tab");
+    const listVo = document.getElementById("choiceVo");
+    const listSpo = document.getElementById("choiceSpo");
+
+    class CustomMap extends YMapComplexEntity {
+        constructor(props) {
+            super(props);
+            this._popupOpen = false;
+        }
+
+        _onAttach() {
+            this._createChoiceList();
+            this._createPopup();
+            this._createMarker();
+            this._actualizePopup();
+        }
+
+        _onDetach() {
+            this._marker = null;
+        }
+
+        _onUpdate(props) {
+            if (props.locations.coordinates) {
+                this._marker?.update({
+                    coordinates: props.locations.coordinates,
+                });
+            }
+        }
+
+        _actualizePopup() {
+            if (this._popupOpen) {
+                this._popup.style.display = "flex";
+            } else {
+                this._popup.style.display = "none";
+            }
+        }
+
+        _createChoiceList() {
+            const choiceRoot = document.createElement("div");
+            const choiceElement = document.createElement("input");
+            const choiceLabel = document.createElement("label");
+
+            choiceElement.dataset.id = this._props.id;
+            choiceLabel.textContent = this._props.info.name;
+
+            choiceRoot.classList = "form-check";
+            choiceElement.classList = "form-check-input";
+            choiceLabel.classList = "form-check-label";
+
+            choiceElement.setAttribute("type", "radio");
+            choiceElement.setAttribute("id", `${this._props.id}`);
+            choiceElement.setAttribute("value", `${this._props.id}`);
+            choiceElement.setAttribute("name", `${this._props.id}`);
+            choiceLabel.setAttribute("for", `${this._props.id}`);
+
+            if (choiceElement.id === "0" || choiceElement.id === "2")
+                choiceElement.checked = true;
+
+            choiceElement.onclick = (e) => {
+                const choiceElements =
+                    document.querySelectorAll(".form-check-input");
+
+                const targetId = e.target.id;
+
+                choiceElements.forEach((element) => {
+                    if (targetId === element.id) {
+                        element.checked;
+                    } else {
+                        element.checked = false;
+                    }
+                });
+
+                this._props.map.setLocation({
+                    center: this._props.locations.center,
+                    zoom: 17,
+                });
+                this._popupOpen = true;
+                this._actualizePopup();
+            };
+
+            choiceRoot.append(choiceElement, choiceLabel);
+            this._props.list.append(choiceRoot);
+        }
+
+        _createMarker() {
+            const container = document.createElement("div");
+            const marker = document.createElement("img");
+            marker.className = "icon-marker";
+            marker.src = this._props.icon;
+            marker.className = "icon-marker";
+            marker.onclick = () => {
+                this._popupOpen = !this._popupOpen;
+                this._actualizePopup();
+                this._props.map.setLocation({
+                    center: this._props.locations.center,
+                    zoom: 17,
+                    duration: 1000,
+                });
+            };
+            container.append(marker, this._popup);
+            this._marker = new YMapMarker(
+                { coordinates: this._props.locations.coordinates },
+                container
+            );
+            this.addChild(this._marker);
+        }
+
+        _createPopup() {
+            const popupElement = document.createElement("div");
+            const closeBtn = document.createElement("div");
+
+            popupElement.className = "popup";
+            closeBtn.className = "close-container";
+
+            const closeIconTemplate = `
+            <svg class="popup-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#56aee0"><path d="M5 5L19 19M5 19L19 5" stroke="#56aee0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            `;
+
+            closeBtn.insertAdjacentHTML("beforeend", closeIconTemplate.trim());
+
+            popupElement.append(closeBtn);
+
+            const template = `
+            <img src="${this._props.info.building}" />
+            <ul class="list-group list-group-flush">
+            <li class="list-group-item contacts__tel">
+                <a href="tel:${this._props.info.tel}" class="link">${
+                this._props.info.tel
+            }</a>
+                ${
+                    this._props.info.additional
+                        ? `<a href="tel:${this._props.info.additional}" class="link">${this._props.info.additional}</a>`
+                        : ""
+                }
+            </li>
+            <li class="list-group-item contacts__mail">
+                <a href="mailto:${
+                    this._props.info.mail
+                }" target="__blank" class="link">${this._props.info.mail}</a>
+            </li>
+            <li class="list-group-item contacts__adress">${
+                this._props.info.address
+            }</li>
+            <li class="list-group-item contacts__clock">Пн-пт: ${
+                this._props.info.opening.pt
+            } <br/>
+            ${
+                this._props.info.opening.break
+                    ? `Обед: ${this._props.info.opening.break} <br/>`
+                    : ""
+            }
+            Сб: ${this._props.info.opening.sb} <br/>
+            Вс: ${this._props.info.opening.vs}
+            </li>
+            </ul>
+            `;
+
+            popupElement.insertAdjacentHTML("beforeend", template.trim());
+
+            closeBtn.onclick = () => {
+                this._popupOpen = false;
+                this._actualizePopup();
+            };
+
+            this._popup = popupElement;
+        }
+    }
+
+    const mapVo = new YMap(
+        document.getElementById("mapVo"),
+        {
+            location: {
+                center: [33.06618599999991, 68.95360154944407],
+                zoom: 17,
+            },
+        },
+        [new YMapDefaultSchemeLayer({}), new YMapDefaultFeaturesLayer({})]
+    );
+
+    const mapSpo = new YMap(
+        document.getElementById("mapSpo"),
+        {
+            location: {
+                center: [33.06618599999991, 68.95360154944407],
+                zoom: 17,
+            },
+        },
+        [new YMapDefaultSchemeLayer({}), new YMapDefaultFeaturesLayer({})]
+    );
+
+    const layerVo = new YMapDefaultSchemeLayer(layer);
+    const layerSpo = new YMapDefaultSchemeLayer(layer);
+
+    mapVo.addChild(layerVo);
+    mapSpo.addChild(layerSpo);
+
+    markerVo.forEach((marker) => {
+        mapVo.addChild(
+            new CustomMap({
+                id: marker.id,
+                locations: marker.locations,
+                icon: marker.iconSrc,
+                info: marker.info,
+                list: listVo,
+                map: mapVo,
+            })
+        );
     });
 
-    map.addChild(layer);
-
-    const customMap = new CustomMap();
-    customMap.renderMap(markerVo);
-
-    tabs.addEventListener("click", (e) => {
-        if (e.target.hash === "#vo-contacts") {
-            customMap.renderMap(markerVo);
-        }
-        if (e.target.hash === "#spo-contacts") {
-            customMap.renderMap(markerSpo);
-        }
+    markerSpo.forEach((marker) => {
+        mapSpo.addChild(
+            new CustomMap({
+                id: marker.id,
+                locations: marker.locations,
+                icon: marker.iconSrc,
+                info: marker.info,
+                list: listSpo,
+                map: mapSpo,
+            })
+        );
     });
 }
 

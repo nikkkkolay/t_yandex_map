@@ -1385,7 +1385,7 @@ ul.files li:before {
     gap: 6px;
 }
 
-.contacts #map ul li {
+.contacts .map-content ul li {
     position: relative;
     list-style: none;
     padding: 0 0 0 28px;
@@ -1442,11 +1442,12 @@ ul.files li:before {
     background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 6.6L9.00001 3V17.4L3 21V6.6Z' stroke='%23009CD9' stroke-opacity='0.95' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M14.9999 6.6L20.9999 3V17.4L14.9999 21V6.6Z' stroke='%23009CD9' stroke-opacity='0.95' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M14.9999 6.6L8.99988 3V17.4L14.9999 21V6.6Z' stroke='%23009CD9' stroke-opacity='0.95' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
-#map {
+.map-content {
     position: relative;
 }
 
-#choice {
+#choiceVo,
+#choiceSpo {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -1457,21 +1458,21 @@ ul.files li:before {
     background-color: rgba(0, 156, 217, 0.9);
 }
 
-#map .form-check-label,
-#map .form-check-label {
+.map-content .form-check-label,
+.map-content .form-check-label {
     cursor: pointer;
     font-weight: 500;
     color: var(--text-primary-beta);
 }
 
-#map .form-check-input:focus {
+.map-content .form-check-input:focus {
     border-color: var(---bg-primary-delta);
     outline: 0;
     box-shadow: 0 0 0 0.25rem var(--box-shadow-primary-epsilon);
     box-shadow: var(--box-shadow-primary-epsilon);
 }
 
-#map .form-check-input:checked {
+.map-content .form-check-input:checked {
     border-color: var(---bg-primary-delta);
     background-color: var(--bg-primary-delta);
     border: 1px solid var(--bg-primary-delta);
