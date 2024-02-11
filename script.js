@@ -37,7 +37,7 @@ $(".navbar-collapse").on("click", function () {
 async function initMap() {
     await ymaps3.ready;
 
-    const markerVo = [
+    const dataVo = [
         {
             id: 0,
             locations: {
@@ -47,6 +47,7 @@ async function initMap() {
             iconSrc:
                 "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
+                active: true,
                 name: "Мурманск, пр. Кирова, д. 1",
                 building: "./plug.png",
                 address:
@@ -85,16 +86,17 @@ async function initMap() {
         },
     ];
 
-    const markerSpo = [
+    const dataSpo = [
         {
-            id: 2,
+            id: 0,
             locations: {
                 coordinates: [33.06618599999991, 68.95360154944407],
-                center: [33.06618599999991, 68.95360154944407],
+                center: [33.06814701625086, 68.95448301008369],
             },
             iconSrc:
                 "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
             info: {
+                active: true,
                 name: "Мурманск, ММРК им. И.И. Месяцева",
                 building: "./plug.png",
                 address:
@@ -109,10 +111,10 @@ async function initMap() {
             },
         },
         {
-            id: 3,
+            id: 1,
             locations: {
                 coordinates: [33.073974499999984, 68.9635510494362],
-                center: [33.073974499999984, 68.9635510494362],
+                center: [33.07554091006468, 68.9643258076825],
             },
             iconSrc:
                 "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
@@ -130,10 +132,10 @@ async function initMap() {
             },
         },
         {
-            id: 4,
+            id: 2,
             locations: {
                 coordinates: [33.4318545, 69.204023548947],
-                center: [33.4318545, 69.204023548947],
+                center: [33.433539817903025, 69.20478506937228],
             },
             iconSrc:
                 "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
@@ -151,10 +153,10 @@ async function initMap() {
             },
         },
         {
-            id: 5,
+            id: 3,
             locations: {
                 coordinates: [33.675953499999984, 67.61130605196836],
-                center: [33.675953499999984, 67.61130605196836],
+                center: [33.67729463509588, 67.61218135170577],
             },
             iconSrc:
                 "https://yastatic.net/s3/front-maps-static/maps-front-jsapi-3/examples/images/marker-custom-icon/yellow-capybara.png",
@@ -306,7 +308,8 @@ async function initMap() {
         YMapMarker,
     } = ymaps3;
 
-    const tabs = document.getElementById("nav-tab");
+    const voMap = document.getElementById("mapVo");
+    const spoMap = document.getElementById("mapSpo");
     const listVo = document.getElementById("choiceVo");
     const listSpo = document.getElementById("choiceSpo");
 
@@ -348,7 +351,6 @@ async function initMap() {
             const choiceElement = document.createElement("input");
             const choiceLabel = document.createElement("label");
 
-            choiceElement.dataset.id = this._props.id;
             choiceLabel.textContent = this._props.info.name;
 
             choiceRoot.classList = "form-check";
@@ -356,13 +358,12 @@ async function initMap() {
             choiceLabel.classList = "form-check-label";
 
             choiceElement.setAttribute("type", "radio");
-            choiceElement.setAttribute("id", `${this._props.id}`);
-            choiceElement.setAttribute("value", `${this._props.id}`);
-            choiceElement.setAttribute("name", `${this._props.id}`);
-            choiceLabel.setAttribute("for", `${this._props.id}`);
+            choiceElement.setAttribute("id", `${this._props.info.name}`);
+            choiceElement.setAttribute("value", `${this._props.info.name}`);
+            choiceElement.setAttribute("name", `${this._props.info.name}`);
+            choiceLabel.setAttribute("for", `${this._props.info.name}`);
 
-            if (choiceElement.id === "0" || choiceElement.id === "2")
-                choiceElement.checked = true;
+            if (this._props.info.active) choiceElement.checked = true;
 
             choiceElement.onclick = (e) => {
                 const choiceElements =
@@ -372,7 +373,7 @@ async function initMap() {
 
                 choiceElements.forEach((element) => {
                     if (targetId === element.id) {
-                        element.checked;
+                        element.checked = true;;
                     } else {
                         element.checked = false;
                     }
@@ -381,6 +382,7 @@ async function initMap() {
                 this._props.map.setLocation({
                     center: this._props.locations.center,
                     zoom: 17,
+                    duration: 500,
                 });
                 this._popupOpen = true;
                 this._actualizePopup();
@@ -475,7 +477,7 @@ async function initMap() {
     }
 
     const mapVo = new YMap(
-        document.getElementById("mapVo"),
+        voMap,
         {
             location: {
                 center: [33.06618599999991, 68.95360154944407],
@@ -486,7 +488,7 @@ async function initMap() {
     );
 
     const mapSpo = new YMap(
-        document.getElementById("mapSpo"),
+        spoMap,
         {
             location: {
                 center: [33.06618599999991, 68.95360154944407],
@@ -502,7 +504,7 @@ async function initMap() {
     mapVo.addChild(layerVo);
     mapSpo.addChild(layerSpo);
 
-    markerVo.forEach((marker) => {
+    dataVo.forEach((marker) => {
         mapVo.addChild(
             new CustomMap({
                 id: marker.id,
@@ -515,7 +517,7 @@ async function initMap() {
         );
     });
 
-    markerSpo.forEach((marker) => {
+    dataSpo.forEach((marker) => {
         mapSpo.addChild(
             new CustomMap({
                 id: marker.id,

@@ -1450,7 +1450,7 @@ ul.files li:before {
 #choiceSpo {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     position: absolute;
     top: 10px;
     z-index: 100;
