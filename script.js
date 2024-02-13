@@ -299,56 +299,40 @@ async function initMap() {
     const listSpo = document.getElementById("choiceSpo");
 
     class CustomMap extends YMapComplexEntity {
-        constructor(props) {
-            super(props);
+        constructor() {
+            super();
             this._popupOpen = false;
-        }
-
-        _onAttach() {
-            this._createChoiceList();
-            this._createPopup();
-            this._createMarker();
-            this._actualizePopup();
-        }
-
-        _onDetach() {
-            this._marker = null;
-        }
-
-        _onUpdate(props) {
-            if (props.locations.coordinates) {
-                this._marker?.update({
-                    coordinates: props.locations.coordinates,
-                });
-            }
+            this._data = [];
+            this._map = null;
+            this._list = null;
         }
 
         _actualizePopup() {
-            if (this._popupOpen) {
+            if (!this._popupOpen) {
                 this._popup.style.display = "flex";
             } else {
                 this._popup.style.display = "none";
             }
         }
 
-        _createChoiceList() {
+        _createChoiceList(marker) {
             const choiceRoot = document.createElement("div");
             const choiceElement = document.createElement("input");
             const choiceLabel = document.createElement("label");
 
-            choiceLabel.textContent = this._props.info.name;
+            choiceLabel.textContent = marker.info.name;
 
             choiceRoot.classList = "form-check";
             choiceElement.classList = "form-check-input";
             choiceLabel.classList = "form-check-label";
 
             choiceElement.setAttribute("type", "radio");
-            choiceElement.setAttribute("id", `${this._props.info.name}`);
-            choiceElement.setAttribute("value", `${this._props.info.name}`);
-            choiceElement.setAttribute("name", `${this._props.info.name}`);
-            choiceLabel.setAttribute("for", `${this._props.info.name}`);
+            choiceElement.setAttribute("id", `${marker.info.name}`);
+            choiceElement.setAttribute("value", `${marker.info.name}`);
+            choiceElement.setAttribute("name", `${marker.info.name}`);
+            choiceLabel.setAttribute("for", `${marker.info.name}`);
 
-            if (this._props.info.active) choiceElement.checked = true;
+            if (marker.info.active) choiceElement.checked = true;
 
             choiceElement.onclick = (e) => {
                 const choiceElements = document.querySelectorAll(".form-check-input");
@@ -363,8 +347,8 @@ async function initMap() {
                     }
                 });
 
-                this._props.map.setLocation({
-                    center: this._props.locations.center,
+                this._map.setLocation({
+                    center: marker.locations.center,
                     zoom: 17,
                     duration: 500,
                 });
@@ -373,30 +357,28 @@ async function initMap() {
             };
 
             choiceRoot.append(choiceElement, choiceLabel);
-            this._props.list.append(choiceRoot);
+            this._list.append(choiceRoot);
         }
 
-        _createMarker() {
+        _createMarker(marker) {
             const container = document.createElement("div");
-            const marker = document.createElement("img");
-            marker.className = "icon-marker";
-            marker.src = this._props.icon;
-            marker.className = "icon-marker";
-            marker.onclick = () => {
+            const markerIcon = document.createElement("img");
+            markerIcon.className = "icon-marker";
+            markerIcon.src = marker.iconSrc;
+            markerIcon.onclick = () => {
                 this._popupOpen = !this._popupOpen;
                 this._actualizePopup();
-                this._props.map.setLocation({
-                    center: this._props.locations.center,
+                this._map.setLocation({
+                    center: marker.locations.center,
                     zoom: 17,
                     duration: 1000,
                 });
             };
-            container.append(marker, this._popup);
-            this._marker = new YMapMarker({ coordinates: this._props.locations.coordinates }, container);
-            this.addChild(this._marker);
+            container.append(markerIcon, this._popup);
+            this._map.addChild(new YMapMarker({ coordinates: marker.locations.coordinates }, container));
         }
 
-        _createPopup() {
+        _createPopup(marker) {
             const popupElement = document.createElement("div");
             const closeBtn = document.createElement("div");
 
@@ -412,20 +394,20 @@ async function initMap() {
             popupElement.append(closeBtn);
 
             const template = `
-            <img src="${this._props.info.building}" />
+            <img src="${marker.info.building}" />
             <ul class="list-group list-group-flush">
             <li class="list-group-item contacts__tel">
-                <a href="tel:${this._props.info.tel}" class="link">${this._props.info.tel}</a>
-                ${this._props.info.additional ? `<a href="tel:${this._props.info.additional}" class="link">${this._props.info.additional}</a>` : ""}
+                <a href="tel:${marker.info.tel}" class="link">${marker.info.tel}</a>
+                ${marker.info.additional ? `<a href="tel:${marker.info.additional}" class="link">${marker.info.additional}</a>` : ""}
             </li>
             <li class="list-group-item contacts__mail">
-                <a href="mailto:${this._props.info.mail}" target="__blank" class="link">${this._props.info.mail}</a>
+                <a href="mailto:${marker.info.mail}" target="__blank" class="link">${marker.info.mail}</a>
             </li>
-            <li class="list-group-item contacts__adress">${this._props.info.address}</li>
-            <li class="list-group-item contacts__clock">Пн-пт: ${this._props.info.opening.pt} <br/>
-            ${this._props.info.opening.break ? `Обед: ${this._props.info.opening.break} <br/>` : ""}
-            Сб: ${this._props.info.opening.sb} <br/>
-            Вс: ${this._props.info.opening.vs}
+            <li class="list-group-item contacts__adress">${marker.info.address}</li>
+            <li class="list-group-item contacts__clock">Пн-пт: ${marker.info.opening.pt} <br/>
+            ${marker.info.opening.break ? `Обед: ${marker.info.opening.break} <br/>` : ""}
+            Сб: ${marker.info.opening.sb} <br/>
+            Вс: ${marker.info.opening.vs}
             </li>
             </ul>
             `;
@@ -439,7 +421,23 @@ async function initMap() {
 
             this._popup = popupElement;
         }
+
+        render(data, map, list) {
+            this._data = data;
+            this._map = map;
+            this._list = list;
+            this._map.addChild(
+                this._data.forEach((marker) => {
+                    this._createChoiceList(marker);
+                    this._createPopup(marker);
+                    this._createMarker(marker);
+                })
+            );
+        }
     }
+
+    const voCustomMap = new CustomMap();
+    const spoCustomMap = new CustomMap();
 
     const mapVo = new YMap(
         voMap,
@@ -469,31 +467,8 @@ async function initMap() {
     mapVo.addChild(layerVo);
     mapSpo.addChild(layerSpo);
 
-    dataVo.forEach((marker) => {
-        mapVo.addChild(
-            new CustomMap({
-                id: marker.id,
-                locations: marker.locations,
-                icon: marker.iconSrc,
-                info: marker.info,
-                list: listVo,
-                map: mapVo,
-            })
-        );
-    });
-
-    dataSpo.forEach((marker) => {
-        mapSpo.addChild(
-            new CustomMap({
-                id: marker.id,
-                locations: marker.locations,
-                icon: marker.iconSrc,
-                info: marker.info,
-                list: listSpo,
-                map: mapSpo,
-            })
-        );
-    });
+    voCustomMap.render(dataVo, mapVo, listVo);
+    // spoCustomMap.render(dataSpo, mapSpo, listSpo);
 }
 
 initMap();
