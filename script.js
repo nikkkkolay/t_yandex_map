@@ -46,7 +46,6 @@ async function initMap() {
             },
             iconSrc: "./marker.svg",
             info: {
-                active: true,
                 name: "Мурманск, пр. Кирова, д. 1",
                 building: "./plug.png",
                 address: "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 112",
@@ -92,7 +91,6 @@ async function initMap() {
             },
             iconSrc: "./marker.svg",
             info: {
-                active: true,
                 name: "Мурманск, ММРК им. И.И. Месяцева",
                 building: "./plug.png",
                 address: "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 108",
@@ -297,6 +295,7 @@ async function initMap() {
     const spoMap = document.getElementById("mapSpo");
     const listVo = document.getElementById("choiceVo");
     const listSpo = document.getElementById("choiceSpo");
+    const tabs = document.getElementById("contact-tab");
 
     class CustomMap extends YMapComplexEntity {
         constructor() {
@@ -304,11 +303,12 @@ async function initMap() {
             this._data = [];
             this._map = null;
             this._list = null;
+            this.flag = false;
         }
 
         _togglePopup(id) {
             document.querySelectorAll(".popup").forEach((popup) => {
-                if (popup.id === String(id)) {
+                if (popup.dataset.id === String(id)) {
                     popup.style.display = "flex";
                 } else {
                     popup.style.display = "none";
@@ -328,12 +328,14 @@ async function initMap() {
             choiceLabel.classList = "form-check-label";
 
             choiceElement.setAttribute("type", "radio");
-            choiceElement.setAttribute("id", `${marker.id}`);
+            choiceElement.setAttribute("id", `${marker.info.name}`);
             choiceElement.setAttribute("value", `${marker.info.name}`);
             choiceElement.setAttribute("name", `${marker.info.name}`);
-            choiceLabel.setAttribute("for", `${marker.id}`);
+            choiceLabel.setAttribute("for", `${marker.info.name}`);
 
-            if (marker.info.active) choiceElement.checked = true;
+            choiceElement.dataset.id = marker.id;
+
+            if (choiceElement.dataset.id === "0") choiceElement.checked = true;
 
             choiceElement.onclick = (e) => {
                 const choiceElements = document.querySelectorAll(".form-check-input");
@@ -367,7 +369,7 @@ async function initMap() {
             markerIcon.className = "icon-marker";
             markerIcon.src = marker.iconSrc;
 
-            markerIcon.setAttribute("id", `${marker.id}`);
+            markerIcon.dataset.id = marker.id;
 
             markerIcon.onclick = () => {
                 this._togglePopup(marker.id);
@@ -388,7 +390,7 @@ async function initMap() {
             popupElement.className = "popup";
             closeBtn.className = "close-container";
 
-            popupElement.setAttribute("id", `${marker.id}`);
+            popupElement.dataset.id = marker.id;
 
             const closeIconTemplate = `
             <svg class="popup-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#56aee0"><path d="M5 5L19 19M5 19L19 5" stroke="#56aee0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -428,13 +430,22 @@ async function initMap() {
             this._data = data;
             this._map = map;
             this._list = list;
-            this._map.addChild(
-                this._data.forEach((marker) => {
-                    this._createChoiceList(marker);
-                    this._createPopup(marker);
-                    this._createMarker(marker);
-                })
-            );
+            this._data.forEach((marker) => {
+                this._createChoiceList(marker);
+                this._createPopup(marker);
+                this._createMarker(marker);
+            });
+            this.flag = true;
+        }
+
+        async toggleLoader() {
+            const container = document.createElement("div");
+            const loader = document.createElement("div");
+            container.classList = "loader-container";
+            loader.classList = "loader";
+            container.classList.toggle("_hide", !this.flag);
+            container.append(loader);
+            this._list.append(container);
         }
     }
 
@@ -452,25 +463,30 @@ async function initMap() {
         [new YMapDefaultSchemeLayer({}), new YMapDefaultFeaturesLayer({})]
     );
 
-    const mapSpo = new YMap(
-        spoMap,
-        {
-            location: {
-                center: [33.06618599999991, 68.95360154944407],
-                zoom: 18,
-            },
-        },
-        [new YMapDefaultSchemeLayer({}), new YMapDefaultFeaturesLayer({})]
-    );
-
     const layerVo = new YMapDefaultSchemeLayer(layer);
-    const layerSpo = new YMapDefaultSchemeLayer(layer);
-
     mapVo.addChild(layerVo);
-    mapSpo.addChild(layerSpo);
-
     voCustomMap.render(dataVo, mapVo, listVo);
-    spoCustomMap.render(dataSpo, mapSpo, listSpo);
+    voCustomMap.toggleLoader();
+
+    tabs.addEventListener("click", (e) => {
+        if (e.target.hash === "#spo-contacts" && !spoCustomMap.flag) {
+            const mapSpo = new YMap(
+                spoMap,
+                {
+                    location: {
+                        center: [33.06618599999991, 68.95360154944407],
+                        zoom: 18,
+                    },
+                },
+                [new YMapDefaultSchemeLayer({}), new YMapDefaultFeaturesLayer({})]
+            );
+            const layerSpo = new YMapDefaultSchemeLayer(layer);
+
+            mapSpo.addChild(layerSpo);
+
+            spoCustomMap.render(dataSpo, mapSpo, listSpo);
+        }
+    });
 }
 
 initMap();

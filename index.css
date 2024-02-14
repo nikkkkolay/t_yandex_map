@@ -1477,3 +1477,35 @@ ul.files li:before {
     background-color: var(--bg-primary-delta);
     border: 1px solid var(--bg-primary-delta);
 }
+
+.loader-container {
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader-container._hide {
+    display: none;
+}
+
+.loader {
+    width: 30px;
+    height: 30px;
+
+    border: 8px solid #cccccc80;
+    border-top: 8px solid #949494;
+    border-radius: 50%;
+
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
