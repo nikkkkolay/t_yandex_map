@@ -301,18 +301,19 @@ async function initMap() {
     class CustomMap extends YMapComplexEntity {
         constructor() {
             super();
-            this._popupOpen = false;
             this._data = [];
             this._map = null;
             this._list = null;
         }
 
-        _actualizePopup() {
-            if (!this._popupOpen) {
-                this._popup.style.display = "flex";
-            } else {
-                this._popup.style.display = "none";
-            }
+        _togglePopup(id) {
+            document.querySelectorAll(".popup").forEach((popup) => {
+                if (popup.id === String(id)) {
+                    popup.style.display = "flex";
+                } else {
+                    popup.style.display = "none";
+                }
+            });
         }
 
         _createChoiceList(marker) {
@@ -327,10 +328,10 @@ async function initMap() {
             choiceLabel.classList = "form-check-label";
 
             choiceElement.setAttribute("type", "radio");
-            choiceElement.setAttribute("id", `${marker.info.name}`);
+            choiceElement.setAttribute("id", `${marker.id}`);
             choiceElement.setAttribute("value", `${marker.info.name}`);
             choiceElement.setAttribute("name", `${marker.info.name}`);
-            choiceLabel.setAttribute("for", `${marker.info.name}`);
+            choiceLabel.setAttribute("for", `${marker.id}`);
 
             if (marker.info.active) choiceElement.checked = true;
 
@@ -352,8 +353,7 @@ async function initMap() {
                     zoom: 17,
                     duration: 500,
                 });
-                this._popupOpen = true;
-                this._actualizePopup();
+                this._togglePopup(marker.id);
             };
 
             choiceRoot.append(choiceElement, choiceLabel);
@@ -363,11 +363,14 @@ async function initMap() {
         _createMarker(marker) {
             const container = document.createElement("div");
             const markerIcon = document.createElement("img");
+
             markerIcon.className = "icon-marker";
             markerIcon.src = marker.iconSrc;
+
+            markerIcon.setAttribute("id", `${marker.id}`);
+
             markerIcon.onclick = () => {
-                this._popupOpen = !this._popupOpen;
-                this._actualizePopup();
+                this._togglePopup(marker.id);
                 this._map.setLocation({
                     center: marker.locations.center,
                     zoom: 17,
@@ -385,6 +388,8 @@ async function initMap() {
             popupElement.className = "popup";
             closeBtn.className = "close-container";
 
+            popupElement.setAttribute("id", `${marker.id}`);
+
             const closeIconTemplate = `
             <svg class="popup-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#56aee0"><path d="M5 5L19 19M5 19L19 5" stroke="#56aee0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             `;
@@ -397,11 +402,11 @@ async function initMap() {
             <img src="${marker.info.building}" />
             <ul class="list-group list-group-flush">
             <li class="list-group-item contacts__tel">
-                <a href="tel:${marker.info.tel}" class="link">${marker.info.tel}</a>
-                ${marker.info.additional ? `<a href="tel:${marker.info.additional}" class="link">${marker.info.additional}</a>` : ""}
+            <a href="tel:${marker.info.tel}" class="link">${marker.info.tel}</a>
+            ${marker.info.additional ? `<a href="tel:${marker.info.additional}" class="link">${marker.info.additional}</a>` : ""}
             </li>
             <li class="list-group-item contacts__mail">
-                <a href="mailto:${marker.info.mail}" target="__blank" class="link">${marker.info.mail}</a>
+            <a href="mailto:${marker.info.mail}" target="__blank" class="link">${marker.info.mail}</a>
             </li>
             <li class="list-group-item contacts__adress">${marker.info.address}</li>
             <li class="list-group-item contacts__clock">Пн-пт: ${marker.info.opening.pt} <br/>
@@ -414,10 +419,7 @@ async function initMap() {
 
             popupElement.insertAdjacentHTML("beforeend", template.trim());
 
-            closeBtn.onclick = () => {
-                this._popupOpen = false;
-                this._actualizePopup();
-            };
+            closeBtn.onclick = () => (popupElement.style.display = "none");
 
             this._popup = popupElement;
         }
@@ -468,7 +470,7 @@ async function initMap() {
     mapSpo.addChild(layerSpo);
 
     voCustomMap.render(dataVo, mapVo, listVo);
-    // spoCustomMap.render(dataSpo, mapSpo, listSpo);
+    spoCustomMap.render(dataSpo, mapSpo, listSpo);
 }
 
 initMap();

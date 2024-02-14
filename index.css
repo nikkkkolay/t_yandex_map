@@ -1352,7 +1352,7 @@ ul.files li:before {
 .popup {
     position: absolute;
     transform: translate(15%, -95%);
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 12px;
     padding: 12px;
