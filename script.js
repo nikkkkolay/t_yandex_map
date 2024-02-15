@@ -35,6 +35,21 @@ $(".navbar-collapse").on("click", function () {
 });
 
 async function initMap() {
+    const containerVo = document.getElementById("mapVo");
+    const containerSpo = document.getElementById("mapSpo");
+    const listVo = document.getElementById("choiceVo");
+    const listSpo = document.getElementById("choiceSpo");
+    const tabs = document.getElementById("contact-tab");
+
+    const toggleLoader = (state) => {
+        if (!state) document.querySelector(".loader-container").classList.add("_hide");
+    };
+
+    await ymaps3.ready
+        .then(() => toggleLoader(true))
+        .catch(() => toggleLoader(true))
+        .finally(() => toggleLoader(false));
+
     const dataVo = [
         {
             id: 0,
@@ -46,7 +61,8 @@ async function initMap() {
             info: {
                 name: "Мурманск, пр. Кирова, д. 1",
                 building: "./plug.png",
-                address: "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 112",
+                address:
+                    "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 112",
                 tel: "8 800 350 12 21",
                 mail: "priem@mauniver.ru",
                 opening: {
@@ -91,7 +107,8 @@ async function initMap() {
             info: {
                 name: "Мурманск, ММРК им. И.И. Месяцева",
                 building: "./plug.png",
-                address: "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 108",
+                address:
+                    "183010, Мурманск, пр. Кирова, д. 1, корпус Л, каб. 108",
                 tel: "8 815 240 33 35",
                 mail: "priem.mmrk@mauniver.ru",
                 opening: {
@@ -151,7 +168,8 @@ async function initMap() {
             info: {
                 name: "Филиал город Кировск",
                 building: "./plug.png",
-                address: "184250, г. Кировск, ул. 50 лет Октября, д. 2, корпус 1, каб. 1116",
+                address:
+                    "184250, г. Кировск, ул. 50 лет Октября, д. 2, корпус 1, каб. 1116",
                 tel: "8 815 315 54 08",
                 mail: "priem.kirovsk@mauniver.ru",
                 opening: {
@@ -287,13 +305,13 @@ async function initMap() {
         ],
     };
 
-    const { YMapComplexEntity, YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker } = ymaps3;
-
-    const containerVo = document.getElementById("mapVo");
-    const containerSpo = document.getElementById("mapSpo");
-    const listVo = document.getElementById("choiceVo");
-    const listSpo = document.getElementById("choiceSpo");
-    const tabs = document.getElementById("contact-tab");
+    const {
+        YMapComplexEntity,
+        YMap,
+        YMapDefaultSchemeLayer,
+        YMapDefaultFeaturesLayer,
+        YMapMarker,
+    } = ymaps3;
 
     class CustomMap extends YMapComplexEntity {
         constructor() {
@@ -336,7 +354,8 @@ async function initMap() {
             if (choiceElement.dataset.id === "0") choiceElement.checked = true;
 
             choiceElement.onclick = (e) => {
-                const choiceElements = document.querySelectorAll(".form-check-input");
+                const choiceElements =
+                    document.querySelectorAll(".form-check-input");
 
                 const targetId = e.target.id;
 
@@ -378,7 +397,12 @@ async function initMap() {
                 });
             };
             container.append(markerIcon, this._popup);
-            this._map.addChild(new YMapMarker({ coordinates: marker.locations.coordinates }, container));
+            this._map.addChild(
+                new YMapMarker(
+                    { coordinates: marker.locations.coordinates },
+                    container
+                )
+            );
         }
 
         _createPopup(marker) {
@@ -403,14 +427,28 @@ async function initMap() {
             <ul class="list-group list-group-flush">
             <li class="list-group-item contacts__tel">
             <a href="tel:${marker.info.tel}" class="link">${marker.info.tel}</a>
-            ${marker.info.additional ? `<a href="tel:${marker.info.additional}" class="link">${marker.info.additional}</a>` : ""}
+            ${
+                marker.info.additional
+                    ? `<a href="tel:${marker.info.additional}" class="link">${marker.info.additional}</a>`
+                    : ""
+            }
             </li>
             <li class="list-group-item contacts__mail">
-            <a href="mailto:${marker.info.mail}" target="__blank" class="link">${marker.info.mail}</a>
+            <a href="mailto:${
+                marker.info.mail
+            }" target="__blank" class="link">${marker.info.mail}</a>
             </li>
-            <li class="list-group-item contacts__adress">${marker.info.address}</li>
-            <li class="list-group-item contacts__clock">Пн-пт: ${marker.info.opening.pt} <br/>
-            ${marker.info.opening.break ? `Обед: ${marker.info.opening.break} <br/>` : ""}
+            <li class="list-group-item contacts__adress">${
+                marker.info.address
+            }</li>
+            <li class="list-group-item contacts__clock">Пн-пт: ${
+                marker.info.opening.pt
+            } <br/>
+            ${
+                marker.info.opening.break
+                    ? `Обед: ${marker.info.opening.break} <br/>`
+                    : ""
+            }
             Сб: ${marker.info.opening.sb} <br/>
             Вс: ${marker.info.opening.vs}
             </li>
@@ -424,12 +462,10 @@ async function initMap() {
             this._popup = popupElement;
         }
 
-        render(data, map, container, list) {
+        render(data, map, list) {
             this._data = data;
             this._map = map;
             this._list = list;
-            this._container = container;
-            this._createLoader();
             this._data.forEach((marker) => {
                 this._createChoiceList(marker);
                 this._createPopup(marker);
@@ -437,24 +473,11 @@ async function initMap() {
             });
             this.flag = true;
         }
-
-        _createLoader() {
-            const loaderContainer = document.createElement("div");
-            const loader = document.createElement("div");
-            loaderContainer.classList = "loader-container";
-            loader.classList = "loader";
-            this._loaderContainer = loaderContainer;
-            this._loaderContainer.append(loader);
-            this._container.append(this._loaderContainer);
-        }
-
-        toggleLoader(state) {
-            this._loaderContainer.classList.add("_hide", state);
-        }
     }
 
     const spoCustomMap = new CustomMap();
     const voCustomMap = new CustomMap();
+
     const mapVo = new YMap(
         containerVo,
         {
@@ -468,29 +491,28 @@ async function initMap() {
 
     const layerVo = new YMapDefaultSchemeLayer(layer);
     mapVo.addChild(layerVo);
-    voCustomMap.render(dataVo, mapVo, containerVo, listVo);
 
-    ymaps3.ready.then(() => voCustomMap.toggleLoader(false)).finally(() => voCustomMap.toggleLoader(false));
+    voCustomMap.render(dataVo, mapVo, listVo);
 
-    // tabs.addEventListener("click", (e) => {
-    //     if (e.target.hash === "#spo-contacts" && !spoCustomMap.flag) {
-    //         const mapSpo = new YMap(
-    //             containerSpo,
-    //             {
-    //                 location: {
-    //                     center: [33.06618599999991, 68.95360154944407],
-    //                     zoom: 18,
-    //                 },
-    //             },
-    //             [new YMapDefaultSchemeLayer({}), new YMapDefaultFeaturesLayer({})]
-    //         );
-    //         const layerSpo = new YMapDefaultSchemeLayer(layer);
+    tabs.addEventListener("click", (e) => {
+        if (e.target.hash === "#spo-contacts" && !spoCustomMap.flag) {
+            const mapSpo = new YMap(
+                containerSpo,
+                {
+                    location: {
+                        center: [33.06618599999991, 68.95360154944407],
+                        zoom: 18,
+                    },
+                },
+                [new YMapDefaultSchemeLayer({}), new YMapDefaultFeaturesLayer({})]
+            );
+            const layerSpo = new YMapDefaultSchemeLayer(layer);
 
-    //         mapSpo.addChild(layerSpo);
+            mapSpo.addChild(layerSpo);
 
-    //         spoCustomMap.render(dataSpo, mapSpo, containerSpo, listSpo);
-    //     }
-    // });
+            spoCustomMap.render(dataSpo, mapSpo, listSpo);
+        }
+    });
 }
 
 initMap();
