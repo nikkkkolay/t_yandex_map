@@ -1349,6 +1349,10 @@ ul.files li:before {
     z-index: 100;
 }
 
+.map {
+    position: relative;
+}
+
 .popup {
     position: absolute;
     transform: translate(15%, -95%);
@@ -1480,7 +1484,11 @@ ul.files li:before {
 
 .loader-container {
     height: 100%;
-
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -35,8 +35,6 @@ $(".navbar-collapse").on("click", function () {
 });
 
 async function initMap() {
-    await ymaps3.ready;
-
     const dataVo = [
         {
             id: 0,
@@ -291,8 +289,8 @@ async function initMap() {
 
     const { YMapComplexEntity, YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker } = ymaps3;
 
-    const voMap = document.getElementById("mapVo");
-    const spoMap = document.getElementById("mapSpo");
+    const containerVo = document.getElementById("mapVo");
+    const containerSpo = document.getElementById("mapSpo");
     const listVo = document.getElementById("choiceVo");
     const listSpo = document.getElementById("choiceSpo");
     const tabs = document.getElementById("contact-tab");
@@ -426,10 +424,12 @@ async function initMap() {
             this._popup = popupElement;
         }
 
-        render(data, map, list) {
+        render(data, map, container, list) {
             this._data = data;
             this._map = map;
             this._list = list;
+            this._container = container;
+            this._createLoader();
             this._data.forEach((marker) => {
                 this._createChoiceList(marker);
                 this._createPopup(marker);
@@ -438,22 +438,25 @@ async function initMap() {
             this.flag = true;
         }
 
-        async toggleLoader() {
-            const container = document.createElement("div");
+        _createLoader() {
+            const loaderContainer = document.createElement("div");
             const loader = document.createElement("div");
-            container.classList = "loader-container";
+            loaderContainer.classList = "loader-container";
             loader.classList = "loader";
-            container.classList.toggle("_hide", !this.flag);
-            container.append(loader);
-            this._list.append(container);
+            this._loaderContainer = loaderContainer;
+            this._loaderContainer.append(loader);
+            this._container.append(this._loaderContainer);
+        }
+
+        toggleLoader(state) {
+            this._loaderContainer.classList.add("_hide", state);
         }
     }
 
-    const voCustomMap = new CustomMap();
     const spoCustomMap = new CustomMap();
-
+    const voCustomMap = new CustomMap();
     const mapVo = new YMap(
-        voMap,
+        containerVo,
         {
             location: {
                 center: [33.06618599999991, 68.95360154944407],
@@ -465,28 +468,29 @@ async function initMap() {
 
     const layerVo = new YMapDefaultSchemeLayer(layer);
     mapVo.addChild(layerVo);
-    voCustomMap.render(dataVo, mapVo, listVo);
-    voCustomMap.toggleLoader();
+    voCustomMap.render(dataVo, mapVo, containerVo, listVo);
 
-    tabs.addEventListener("click", (e) => {
-        if (e.target.hash === "#spo-contacts" && !spoCustomMap.flag) {
-            const mapSpo = new YMap(
-                spoMap,
-                {
-                    location: {
-                        center: [33.06618599999991, 68.95360154944407],
-                        zoom: 18,
-                    },
-                },
-                [new YMapDefaultSchemeLayer({}), new YMapDefaultFeaturesLayer({})]
-            );
-            const layerSpo = new YMapDefaultSchemeLayer(layer);
+    ymaps3.ready.then(() => voCustomMap.toggleLoader(false)).finally(() => voCustomMap.toggleLoader(false));
 
-            mapSpo.addChild(layerSpo);
+    // tabs.addEventListener("click", (e) => {
+    //     if (e.target.hash === "#spo-contacts" && !spoCustomMap.flag) {
+    //         const mapSpo = new YMap(
+    //             containerSpo,
+    //             {
+    //                 location: {
+    //                     center: [33.06618599999991, 68.95360154944407],
+    //                     zoom: 18,
+    //                 },
+    //             },
+    //             [new YMapDefaultSchemeLayer({}), new YMapDefaultFeaturesLayer({})]
+    //         );
+    //         const layerSpo = new YMapDefaultSchemeLayer(layer);
 
-            spoCustomMap.render(dataSpo, mapSpo, listSpo);
-        }
-    });
+    //         mapSpo.addChild(layerSpo);
+
+    //         spoCustomMap.render(dataSpo, mapSpo, containerSpo, listSpo);
+    //     }
+    // });
 }
 
 initMap();
